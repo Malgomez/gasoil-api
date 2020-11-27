@@ -4,21 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
-    name: {
+    usuario: {
         type: String,
         required: true,
         trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        validate: value => {
-            if (!validator.isEmail(value)) {
-                throw new Error({error: 'Correo electrónico no valido'})
-            }
-        }
     },
     password: {
         type: String,
@@ -52,9 +41,9 @@ userSchema.methods.generateAuthToken = async function() {
     return token;
 }
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (usuario, password) => {
     //busqueda del usuario el correo y la contrasena
-    const user = await User.findOne({ email});
+    const user = await User.findOne({ usuario});
     if (!user) {
         throw new Error({error: 'Credenciales Invalidadas'});
     }

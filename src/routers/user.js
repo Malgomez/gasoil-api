@@ -11,7 +11,7 @@ router.post('/users', async (req, res) => {
         const user = new User(req.body);
         await user.save()
         const token = await user.generateAuthToken();
-        res.status(201).send({ user, token});
+        res.status(201).send({ usuario, password, token});
     }catch (error) {
         res.status(400).send(error);
     }
@@ -20,15 +20,15 @@ router.post('/users', async (req, res) => {
 router.post('/users/login', async(req, res) => {
     //login de un usuario registrado
     try{
-        const {email, password} = req.body;
-        const user = await User.findByCredentials(email, password);
+        const {usuario, password} = req.body;
+        const user = await User.findByCredentials(usuario, password);
         if(!user){
             return res.status(401).send({error: 'Usuario o contraseña incorrecta'});
         }
         const token = await user.generateAuthToken();
-        res.send({user, token});
+        res.send({usuario, token});
     }catch (error) {
-        res.status(400).setDefaultEncoding(error);
+        res.status(400).send({error: 'Credenciales incorrectas'});
     }
 })
 
