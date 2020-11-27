@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
-const auth = require ('../middleware/auth')
+const auth = require ('../middleware/auth');
+const { ResumeToken } = require('mongodb');
 
 const router = express.Router();
 
@@ -36,4 +37,27 @@ router.get('/users/me', auth, async(req, res) => {
     res.send(req.user);
 })
 
+router.post('/users/me/logout', auth, async (req, res) => {
+    //deslogueo del usuario
+    try {
+        ResumeToken.user.tokens = req.user.tokens.filter((token) => {
+            return token.token != req.token;
+        })
+        await req.user.save();
+        res.send()
+    }catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+router.post('/users/me/logoutall', auth, async (req, res) =>{
+    //deslogueo de todos los dispositivos
+    try{
+        req.user.tokens.splice(0, req.user.tokens.length);
+        await req.user.save();
+        res.send();
+    }catch (error) {
+        res.status(500).send(error);
+    }
+})
 module.exports = router;
