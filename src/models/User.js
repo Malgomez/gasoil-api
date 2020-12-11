@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -9,10 +8,10 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+
     password: {
         type: String,
-        required: true,
-        minLength: 7
+        required: true
     },
     tokens: [{
         token: {
@@ -42,7 +41,7 @@ userSchema.methods.generateAuthToken = async function() {
 }
 
 userSchema.statics.findByCredentials = async (usuario, password) => {
-    //busqueda del usuario el correo y la contrasena
+    //busqueda del usuario y la contrasena
     const user = await User.findOne({ usuario});
     if (!user) {
         throw new Error({error: 'Credenciales Invalidadas'});

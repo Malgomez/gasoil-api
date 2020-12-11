@@ -1,7 +1,8 @@
 const express = require('express');
 const User = require('../models/User');
 const auth = require ('../middleware/auth');
-const { ResumeToken } = require('mongodb');
+const { ResumeToken, MongoClient } = require('mongodb');
+const { db } = require('../models/User');
 
 const router = express.Router();
 
@@ -11,11 +12,16 @@ router.post('/users', async (req, res) => {
         const user = new User(req.body);
         await user.save()
         const token = await user.generateAuthToken();
-        res.status(201).send({ usuario, password, token});
+        res.status(201).send({data: {nombre: user.usuario, contrasenya: user.password, token: token}});
     }catch (error) {
+        console.log(error);
         res.status(400).send(error);
     }
 })
+
+router.get('/users/all', async (req, res) => {
+    res.send(await User.find({}).exec());
+});
 
 router.post('/users/login', async(req, res) => {
     //login de un usuario registrado
