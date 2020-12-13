@@ -12,7 +12,7 @@ router.post('/users', async (req, res) => {
         const user = new User(req.body);
         await user.save()
         const token = await user.generateAuthToken();
-        res.status(201).send({data: {nombre: user.usuario, contrasenya: user.password, token: token}});
+        res.status(201).send({data: {nombre: user.usuario, contrasenya: user.password, permiso: user.permiso, token: token}});
     }catch (error) {
         console.log(error);
         res.status(400).send(error);
@@ -22,6 +22,10 @@ router.post('/users', async (req, res) => {
 router.get('/users/all', async (req, res) => {
     res.send(await User.find({}).exec());
 });
+
+router.get('/users/findByToken', async (body, res) => {
+    res.send(await User.find({token: body}).exec());
+})
 
 router.post('/users/login', async(req, res) => {
     //login de un usuario registrado

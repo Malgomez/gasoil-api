@@ -13,6 +13,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+
+    permiso: {
+        type: String,
+        required: true 
+    },
     tokens: [{
         token: {
             type: String,
