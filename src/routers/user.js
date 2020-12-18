@@ -36,7 +36,8 @@ router.post('/users/login', async(req, res) => {
             return res.status(401).send({error: 'Usuario o contraseña incorrecta'});
         }
         const token = await user.generateAuthToken();
-        res.send({usuario, token});
+        const permiso = user.permiso;
+        res.send({usuario, token, permiso});
     }catch (error) {
         res.status(400).send({error: 'Credenciales incorrectas'});
     }
