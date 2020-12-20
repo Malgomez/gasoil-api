@@ -2,7 +2,9 @@ const express = require('express');
 const User = require('../models/User');
 const auth = require ('../middleware/auth');
 const { ResumeToken, MongoClient } = require('mongodb');
+const ListadoGasoil = require('../models/ListadoGasoil');
 const { db } = require('../models/User');
+const {db1} = require('../models/ListadoGasoil');
 
 const router = express.Router();
 
@@ -70,5 +72,6 @@ router.post('/users/me/logoutall', auth, async (req, res) =>{
     }catch (error) {
         res.status(500).send(error);
     }
-})
-module.exports = router;
+});
+
+module.exports = router; 
