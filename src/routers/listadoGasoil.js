@@ -29,6 +29,11 @@ router.post('/listado', async (req, res) => {
     }
 });
 
+router.get('listado/guardarArchivo', async (body, res) => {
+    //document.write(body);
+    console.log(body);
+    res.sendFile({body}).exec();
+})
 router.get('/listado/findByDelegacion', async (body, res) => {
     res.send(await ListadoGasoil.find({ delegacion: delegacion }).exec());
 })
